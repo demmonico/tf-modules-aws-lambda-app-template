@@ -8,28 +8,34 @@ include:
 
   # TODO use following when Gitlab Library placed in the same Gitlab instance
   - project: "devops/gitlab-lib"
-    ref: v2-latest
-    file: "/pipelines/templates/lambda-node20.yml"
+    ref: v2-latest                                  # bind with the certain version. Check for the latest one
+    file: "/pipelines/templates/lambda-node20.yml"  # this template works with the Node.js v20. Put one that you'll be needed
 
   # TODO use following to use remote Gitlab Library
   - remote: "https://raw.githubusercontent.com/demmonico/gitlab-lib/refs/heads/master/pipelines/templates/lambda-node20.yml"
 
 #----------------------------------------#
 
+# job name is the stardard to differenciate it from the custom ones
+# it consists of: <lib_prefix:cilib>:<stage:pack>:<env_name>
 cilib:pack:staging:
   variables:
-    # TODO set your lambda name
+    # IMPORTANT: TODO set your lambda name
     LAMBDA_NAME: your-lambda-name-staging
-    # TODO add following if secrets will be used (and update it when it's needed))
+
+    # If ommitted, secrets WILL NOT be populated into the Lambda's env vars
+    # By default, they are created with the same name to the Lambda function itself
+    # TODO add following if secrets will be used (and update it when it's needed)
     AWS_SECRETS_PATH_APP: $LAMBDA_NAME
+
+    # There is direct way of adding Lambda's env var from the CI/CD. It's good for non-secret common things like log level configs etc
+    # Env vars prefixed with CILIB_APP_ will be published as Lambda's env vars
     # TODO add following to include env vars to the lambda. NOTE: env vars prefixed with CILIB_APP_ will be published as lambda's env vars
     CILIB_APP_LOG_LEVEL: debug
 
 cilib:pack:prod:
   variables:
-    # TODO set your lambda name
+    # IMPORTANT: TODO set your lambda name
     LAMBDA_NAME: your-lambda-name-production
-    # TODO add following if secrets will be used (and update it when it's needed))
     AWS_SECRETS_PATH_APP: $LAMBDA_NAME
-    # TODO add following to include env vars to the lambda. NOTE: env vars prefixed with CILIB_APP_ will be published as lambda's env vars
     CILIB_APP_LOG_LEVEL: info
