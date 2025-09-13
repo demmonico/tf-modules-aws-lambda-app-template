@@ -1,0 +1,35 @@
+default:
+  tags:
+    - dind # TODO change it to actual tags for your project
+
+#---------------------#
+
+include:
+
+  # TODO use following when Gitlab Library placed in the same Gitlab instance
+  - project: "devops/gitlab-lib"
+    ref: v2-latest
+    file: "/pipelines/templates/lambda-node20.yml"
+
+  # TODO use following to use remote Gitlab Library
+  - remote: "https://raw.githubusercontent.com/demmonico/gitlab-lib/refs/heads/master/pipelines/templates/lambda-node20.yml"
+
+#----------------------------------------#
+
+cilib:pack:staging:
+  variables:
+    # TODO set your lambda name
+    LAMBDA_NAME: your-lambda-name-staging
+    # TODO add following if secrets will be used (and update it when it's needed))
+    AWS_SECRETS_PATH_APP: $LAMBDA_NAME
+    # TODO add following to include env vars to the lambda. NOTE: env vars prefixed with CILIB_APP_ will be published as lambda's env vars
+    CILIB_APP_LOG_LEVEL: debug
+
+cilib:pack:prod:
+  variables:
+    # TODO set your lambda name
+    LAMBDA_NAME: your-lambda-name-production
+    # TODO add following if secrets will be used (and update it when it's needed))
+    AWS_SECRETS_PATH_APP: $LAMBDA_NAME
+    # TODO add following to include env vars to the lambda. NOTE: env vars prefixed with CILIB_APP_ will be published as lambda's env vars
+    CILIB_APP_LOG_LEVEL: info

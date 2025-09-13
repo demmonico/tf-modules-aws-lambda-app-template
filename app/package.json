@@ -1,0 +1,42 @@
+{
+  "name": "lambda-app-template",
+  "version": "1.0.0",
+  "description": "",
+  "type": "module",
+  "main": "index.mjs",
+  "config": {
+    "src_path": "./src",
+    "dist_path": "./dist"
+  },
+  "scripts": {
+    "start:server": "npm install -g nodemon && NODE_ENV=dev nodemon index.mjs",
+    "install:dev": "npm install",
+    "init": "npm run install:dev && npm run start:server",
+    "build": "rm -rf $npm_package_config_dist_path && esbuild $npm_package_config_src_path/index.mjs --bundle --sourcemap --platform=node --target=es2020 --outfile=$npm_package_config_dist_path/index.js",
+    "typecheck": "tsc --build && tsc --build --clean",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "eslint $npm_package_config_src_path",
+    "lint:fix": "eslint $npm_package_config_src_path --fix",
+    "prettier": "prettier --check \"$npm_package_config_src_path/**/*.ts\"",
+    "prettier:fix": "prettier --write \"$npm_package_config_src_path/**/*.ts\"",
+    "checks": "npm run lint && npm run prettier && npm run typecheck",
+    "checks:fix": "npm run lint:fix && npm run prettier:fix && npm run typecheck"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "winston": "^3.17.0"
+  },
+  "devDependencies": {
+    "@eslint/eslintrc": "^3.0.2",
+    "@eslint/js": "^9.0.0",
+    "esbuild": "^0.25.0",
+    "eslint": "^8.57.1",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-import": "^2.29.1",
+    "prettier": "^3.4.1",
+    "globals": "^15.12.0",
+    "mocha": "^10.4.0"
+  }
+}
